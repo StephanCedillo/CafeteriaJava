@@ -73,6 +73,8 @@ public class VistaPrincipal extends javax.swing.JFrame {
         ImageIcon icon2 = new ImageIcon(getClass().getResource("/assets/icon2.png"));
         colocarImagen(jLabel5, icon,60,60);
          colocarImagen(jLabel2, icon2,30,30);
+         
+         this.setLocationRelativeTo(null);
     }
 
     public void colocarImagen(JLabel label, ImageIcon icon, int witdh, int height) {
@@ -158,6 +160,7 @@ public class VistaPrincipal extends javax.swing.JFrame {
         scrollCatalogo = new javax.swing.JScrollPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 

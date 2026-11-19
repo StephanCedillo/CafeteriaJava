@@ -573,7 +573,7 @@ public class PrincipalController {
     }
 
     public void mostrarVentanaEmergente(JFrame ventanaPadre, Factura panelAmostrar) {
-        JDialog dialogo = new JDialog(ventanaPadre, "Ventana Emergente", false);
+        JDialog dialogo = new JDialog(ventanaPadre, "Factura Final", false);
         dialogo.getContentPane().add(panelAmostrar);
         dialogo.pack();
         dialogo.setLocationRelativeTo(ventanaPadre);

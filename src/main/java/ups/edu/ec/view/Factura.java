@@ -39,18 +39,16 @@ public class Factura extends javax.swing.JPanel {
     }
 private static final Color CAFE        = new Color(0x6F4E37);
 private static final Color CREMA       = new Color(0xFFF3F0);
-private static final Color BEIGE       = new Color(0xE8D8C4);
-private static final Color BORDE       = new Color(0xD2B48C);
 private static final Color TEXTO       = new Color(0x3B2A20);
-private static final String IVA_TEXTO  = "IVA (15 %)"; // ajusta a tu tasa
+private static final String IVA_TEXTO  = "IVA (10 %)"; 
 
 private void aplicarEstilosFlatLaf() {
-    // 1. Fondos
+
     jPanel1.setBackground(CREMA);
     jPanel3.setBackground(CREMA);
     jPanel8.setBackground(CREMA);
 
-    // 2. Título centrado (reemplaza el GroupLayout con gap fijo de 196 px)
+   
     jPanel2.setBackground(CAFE);
     jPanel2.removeAll();
     jPanel2.setLayout(new BorderLayout());
@@ -61,10 +59,10 @@ private void aplicarEstilosFlatLaf() {
     jLabel1.setHorizontalAlignment(SwingConstants.CENTER);
     jPanel2.add(jLabel1, BorderLayout.CENTER);
 
-    // 3. Tabla
+  
     estilizarTabla();
 
-    // 4. Totales
+
     jLabel8.setText("Subtotal");
     jLabel6.setText(IVA_TEXTO);
     jLabel7.setText("Total");
@@ -79,9 +77,6 @@ private void aplicarEstilosFlatLaf() {
     estilizarCampoTotal(txtIva, false);
     estilizarCampoTotal(txtTotal, true);
 
-    jPanel8.setBorder(BorderFactory.createCompoundBorder(
-            new FlatLineBorder(new Insets(1, 1, 1, 1), BORDE, 1f, 16),
-            BorderFactory.createEmptyBorder(6, 10, 6, 10)));
 }
 
 private void estilizarTabla() {
@@ -124,7 +119,6 @@ private void estilizarTabla() {
     tblFactura.setDefaultRenderer(Double.class, moneda);
 
 
-    jScrollPane1.setBorder(BorderFactory.createLineBorder(BORDE));
     jScrollPane1.getViewport().setBackground(Color.WHITE);
 }
 
@@ -133,12 +127,7 @@ private void estilizarCampoTotal(JTextField campo, boolean destacado) {
     campo.setEditable(false);        
     campo.setHorizontalAlignment(SwingConstants.RIGHT);
     campo.setText("0.00");
-    campo.setForeground(destacado ? CAFE : TEXTO);
-    campo.setFont(fuente(destacado ? Font.BOLD : Font.PLAIN, destacado ? 16f : 13f));
-    campo.putClientProperty(FlatClientProperties.STYLE,
-            "arc: 12; borderWidth: 1; borderColor: #D2B48C;"
-            + "background: " + (destacado ? "#F3E7D8" : "#FFFFFF") + ";"
-           );
+   
 }
 
 // Fuente base del sistema (evita Rockwell/Hiragino/Krungthep, que solo existen en Mac)
@@ -344,11 +333,11 @@ private Font fuente(int estilo, float tamano) {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
