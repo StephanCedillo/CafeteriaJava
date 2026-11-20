@@ -13,7 +13,6 @@ import javax.swing.BoxLayout;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -30,6 +29,8 @@ public class PrincipalController {
 
     private final VistaPrincipal ventana;
     private static int numeroOrden = 001;
+    private boolean isModificando = false;
+    private int indexModificado = -1;
 
     private List<PlatoPedido> platosPedidos;
     private Map<Plato, List<Class<? extends DecoradorPlato>>> platos;
@@ -129,16 +130,14 @@ public class PrincipalController {
                 if (platoTemporal != null) {
                     // platosPedidos.put(platoTemporal, decoradoresTemporales);
                     platosPedidos.add(new PlatoPedido(platoTemporal, decoradoresTemporales));
-                    JOptionPane.showMessageDialog(null,
-                            "Se agregará un nuevo producto al pedido.",
-                            "Información",
-                            JOptionPane.INFORMATION_MESSAGE);
 
                     decoradoresTemporales = new ArrayList<>();
                     platoTemporal = null;
                 }
                 System.out.println(panelPlato.getPlato());
                 platoTemporal = panelPlato.getPlato();
+                isModificando = false;
+                indexModificado = -1;
                 actualizar();
             }
         });
@@ -147,26 +146,19 @@ public class PrincipalController {
                 new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (platoTemporal == null) {
-                    JOptionPane.showMessageDialog(null,
-                            ("Para este adicional debe agregar el plato  "
-                            + platoTemporal.nombrePropio()),
-                            "Plato no seleccionado",
-                            JOptionPane.WARNING_MESSAGE);
+                if (isModificando == true) {
+                    platosPedidos.get(indexModificado).getDecoradores().add(panelPlato.getDecoradores().get(0));
+                   actualizar();
                     return;
                 }
-                if (!platoTemporal.equals(panelPlato.getPlato())) {
-                    JOptionPane.showMessageDialog(null,
-                            "El adicional seleccionado no es compatible con el plato: "
-                            + platoTemporal.nombrePropio() + ".",
-                            "Adicional no compatible",
-                            JOptionPane.WARNING_MESSAGE);
+                if (platoTemporal == null || !platoTemporal.equals(panelPlato.getPlato())) {
                     return;
                 }
                 for (Class<? extends DecoradorPlato> decoradoresPermitido : decoradoresPermitidos) {
                     if (decoradoresPermitido.equals(panelPlato.getDecoradores().get(0))) {
                         decoradoresTemporales.add(panelPlato.getDecoradores().get(0));
                         actualizar();
+
                         return;
                     }
                 }
@@ -178,20 +170,12 @@ public class PrincipalController {
                 new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (platoTemporal == null) {
-                    JOptionPane.showMessageDialog(null,
-                            ("Para este adicional debe agregar el plato  "
-                            + platoTemporal.nombrePropio()),
-                            "Plato no seleccionado",
-                            JOptionPane.WARNING_MESSAGE);
+                if (isModificando == true) {
+                    platosPedidos.get(indexModificado).getDecoradores().add(panelPlato.getDecoradores().get(0));
+                    actualizar();
                     return;
                 }
-                if (!platoTemporal.equals(panelPlato.getPlato())) {
-                    JOptionPane.showMessageDialog(null,
-                            "El adicional seleccionado no es compatible con el plato: "
-                            + platoTemporal.nombrePropio() + ".",
-                            "Adicional no compatible",
-                            JOptionPane.WARNING_MESSAGE);
+                if (platoTemporal == null || !platoTemporal.equals(panelPlato.getPlato())) {
                     return;
                 }
                 for (Class<? extends DecoradorPlato> decoradoresPermitido : decoradoresPermitidos) {
@@ -209,20 +193,12 @@ public class PrincipalController {
                 new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (platoTemporal == null) {
-                    JOptionPane.showMessageDialog(null,
-                            ("Para este adicional debe agregar el plato  "
-                            + platoTemporal.nombrePropio()),
-                            "Plato no seleccionado",
-                            JOptionPane.WARNING_MESSAGE);
+                if (isModificando == true) {
+                    platosPedidos.get(indexModificado).getDecoradores().add(panelPlato.getDecoradores().get(0));
+                  actualizar();
                     return;
                 }
-                if (!platoTemporal.equals(panelPlato.getPlato())) {
-                    JOptionPane.showMessageDialog(null,
-                            "El adicional seleccionado no es compatible con el plato: "
-                            + platoTemporal.nombrePropio() + ".",
-                            "Adicional no compatible",
-                            JOptionPane.WARNING_MESSAGE);
+                if (platoTemporal == null || !platoTemporal.equals(panelPlato.getPlato())) {
                     return;
                 }
                 if (decoradoresPermitidos.size() < 3) {
@@ -246,6 +222,7 @@ public class PrincipalController {
                 new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
                 // ACORDARME DE AGREGAR FACTURA FINAL
                 numeroOrden++;
                 List<Plato> platosFinales = new ArrayList<>();
@@ -405,7 +382,7 @@ public class PrincipalController {
         double subtotal = 0;
         if (platoTemporal != null) {
             subtotal = platoTempDecorado.getCosto();
-            System.out.println("Costo PT:" + platoTempDecorado.getCosto());
+           
         }
 
         double iva = 0;
@@ -413,7 +390,7 @@ public class PrincipalController {
 
         for (Plato platoD : platosDecoradores) {
             subtotal += platoD.getCosto();
-            System.out.println("Costo" + platoD.getCosto());
+           
 
         }
 
@@ -434,7 +411,7 @@ public class PrincipalController {
     // Plato platoTemporal = null;
     // List<Class<? extends DecoradorPlato>> decoradoresTemporales = null;
     private void configurarTablaEventos() {
-   
+
         // configurar eliminar
         ventana.getTblFactura().addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
@@ -449,20 +426,12 @@ public class PrincipalController {
                         PlatoPedido platoPedido = platosPedidos.get(i);
 
                         if (contador == fila && platoPedido.getDecoradores().isEmpty()) {
-                            JOptionPane.showMessageDialog(null,
-                                    "El producto se ha eliminado correctamente del pedido.",
-                                    "Producto eliminado",
-                                    JOptionPane.INFORMATION_MESSAGE);
+
                             platosPedidos.remove(i);
                             actualizar();
                             return;
                         } else if (contador == fila) {
-                            JOptionPane.showMessageDialog(null,
-                                    "No es posible eliminar este plato mientras tenga adicionales asociados.\n"
-                                    + "Primero debe eliminar los adicionales de: "
-                                    + platoPedido.getPlato().nombrePropio() + ".",
-                                    "No se puede eliminar el producto",
-                                    JOptionPane.WARNING_MESSAGE);
+
                             return;
                         }
                         contador++;
@@ -470,10 +439,7 @@ public class PrincipalController {
                         List<Class<? extends DecoradorPlato>> decoradores = platoPedido.getDecoradores();
                         for (int j = 0; j < decoradores.size(); j++) {
                             if (contador == fila) {
-                                JOptionPane.showMessageDialog(null,
-                                        "El adicional se ha eliminado correctamente.",
-                                        "Adicional eliminado",
-                                        JOptionPane.INFORMATION_MESSAGE);
+
                                 decoradores.remove(j);
                                 actualizar();
                                 return;
@@ -485,30 +451,19 @@ public class PrincipalController {
 
                     if (platoTemporal != null) {
                         if (contador == fila && decoradoresTemporales.isEmpty()) {
-                            JOptionPane.showMessageDialog(null,
-                                    "El producto se ha eliminado correctamente del pedido.",
-                                    "Producto eliminado",
-                                    JOptionPane.INFORMATION_MESSAGE);
+
                             platoTemporal = null;
                             decoradoresTemporales = new ArrayList<>();
                             actualizar();
                             return;
                         } else if (contador == fila) {
-                            JOptionPane.showMessageDialog(null,
-                                    "No es posible eliminar este plato mientras tenga adicionales asociados.\n"
-                                    + "Primero debe eliminar los adicionales de: "
-                                    + platoTemporal.nombrePropio() + ".",
-                                    "No se puede eliminar el producto",
-                                    JOptionPane.WARNING_MESSAGE);
+
                             return;
                         }
                         contador++;
                         for (int k = 0; k < decoradoresTemporales.size(); k++) {
                             if (contador == fila) {
-                                JOptionPane.showMessageDialog(null,
-                                        "El adicional se ha eliminado correctamente.",
-                                        "Adicional eliminado",
-                                        JOptionPane.INFORMATION_MESSAGE);
+
                                 decoradoresTemporales.remove(k);
                                 actualizar();
                                 return;
@@ -517,25 +472,19 @@ public class PrincipalController {
                         }
                     }
                 }
+
                 if (columna == 0 && fila != -1) {
                     int contador = 0;
-
+                    
                     for (int i = 0; i < platosPedidos.size(); i++) {
                         PlatoPedido platoPedido = platosPedidos.get(i);
 
                         if (contador == fila) {
-
-                            JOptionPane.showMessageDialog(null,
-                                    "Ha seleccionado un producto para modificar.",
-                                    "Modificación de producto",
-                                    JOptionPane.INFORMATION_MESSAGE);
-
-                            platosPedidos.add(new PlatoPedido(platoTemporal, decoradoresTemporales));
-                            platosPedidos.remove(i);
-                            platoTemporal = platoPedido.getPlato();
-                            decoradoresTemporales = platoPedido.getDecoradores();
+                            System.out.println("agregar");
+                            isModificando = true;
+                            indexModificado = i;
                             return;
-                        }
+}
                         contador++;
 
                         List<Class<? extends DecoradorPlato>> decoradores = platoPedido.getDecoradores();
@@ -543,16 +492,10 @@ public class PrincipalController {
                             contador++;
                         }
                     }
-                    JOptionPane.showMessageDialog(null,
-                            "Por favor, seleccione un plato ya modificado  para continuar.",
-                            "Selección no válida",
-                            JOptionPane.WARNING_MESSAGE);
-
                 }
             }
 
         });
-        // configurar agregar
 
     }
 

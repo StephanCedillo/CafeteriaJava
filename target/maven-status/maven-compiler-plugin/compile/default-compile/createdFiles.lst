@@ -5,6 +5,7 @@ ups/edu/ec/models/Platos/Queso.class
 ups/edu/ec/view/Factura.class
 ups/edu/ec/controllers/PrincipalController$4.class
 ups/edu/ec/models/Platos/Tomate.class
+ups/edu/ec/controllers/PrincipalController$8.class
 ups/edu/ec/controllers/PrincipalController$3.class
 ups/edu/ec/view/VistaPrincipal$1.class
 ups/edu/ec/models/DecoradorPlato.class
